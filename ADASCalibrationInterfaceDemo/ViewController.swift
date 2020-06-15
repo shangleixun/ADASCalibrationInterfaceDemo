@@ -98,7 +98,7 @@ class ViewController: UIViewController {
         v_size = CGSize(width: kScreenWidth, height: kScreenHeight)
         videoView = UIImageView()
         videoView.isUserInteractionEnabled = true
-        videoView.image = UIImage.init(named: "image")
+        videoView.image = UIImage.init(named: "image.jpg")
         videoView.contentMode = .scaleToFill
         
         self.view.addSubview(videoView)
