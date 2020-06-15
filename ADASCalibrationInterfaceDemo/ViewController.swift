@@ -108,6 +108,7 @@ class ViewController: UIViewController {
         
         wheel = SteeringWheel(frame: CGRect(x: 0, y: 0, width: 120, height: 120))
         wheel.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 239/255.0, alpha: 1)
+        wheel.layer.cornerRadius = 60.0
         wheel.btnTouchEvent = { [weak self] (sender) in
             if let senderView = sender as? UIView {
                 print("点击了 或者长按了 \(senderView.tag)")

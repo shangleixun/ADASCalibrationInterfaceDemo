@@ -174,7 +174,6 @@ class SteeringWheel: UIView {
             long_press_timer?.resume()
             timerState = .started
         }
-        
     }
     
     override func delete(_ sender: Any?) {
