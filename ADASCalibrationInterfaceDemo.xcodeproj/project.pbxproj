@@ -52,6 +52,8 @@
 		E260BC8F24961B6D00C4F26E /* ConstraintDirectionalInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E260BC6A24961B6D00C4F26E /* ConstraintDirectionalInsets.swift */; };
 		E260BC9024961B6D00C4F26E /* ConstraintLayoutSupportDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E260BC6B24961B6D00C4F26E /* ConstraintLayoutSupportDSL.swift */; };
 		E260BC9124961B6D00C4F26E /* ConstraintMakerRelatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E260BC6C24961B6D00C4F26E /* ConstraintMakerRelatable.swift */; };
+		E288FE1E24970AD100890E1A /* InputParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E288FE1D24970AD100890E1A /* InputParametersView.swift */; };
+		E288FE2024970BD600890E1A /* InputStyleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E288FE1F24970BD600890E1A /* InputStyleCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +126,8 @@
 		E260BC6A24961B6D00C4F26E /* ConstraintDirectionalInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintDirectionalInsets.swift; sourceTree = "<group>"; };
 		E260BC6B24961B6D00C4F26E /* ConstraintLayoutSupportDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintLayoutSupportDSL.swift; sourceTree = "<group>"; };
 		E260BC6C24961B6D00C4F26E /* ConstraintMakerRelatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintMakerRelatable.swift; sourceTree = "<group>"; };
+		E288FE1D24970AD100890E1A /* InputParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputParametersView.swift; sourceTree = "<group>"; };
+		E288FE1F24970BD600890E1A /* InputStyleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputStyleCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +187,8 @@
 				E20A939524947D9000CBB519 /* LaunchScreen.storyboard */,
 				E20A939824947D9000CBB519 /* Info.plist */,
 				E20A93BC2494A46F00CBB519 /* SteeringWheel.swift */,
+				E288FE1D24970AD100890E1A /* InputParametersView.swift */,
+				E288FE1F24970BD600890E1A /* InputStyleCell.swift */,
 			);
 			path = ADASCalibrationInterfaceDemo;
 			sourceTree = "<group>";
@@ -402,6 +408,7 @@
 				E260BC8024961B6D00C4F26E /* Typealiases.swift in Sources */,
 				E20A938B24947D9000CBB519 /* AppDelegate.swift in Sources */,
 				E260BC7724961B6D00C4F26E /* ConstraintMakerExtendable.swift in Sources */,
+				E288FE1E24970AD100890E1A /* InputParametersView.swift in Sources */,
 				E260BC8924961B6D00C4F26E /* Constraint.swift in Sources */,
 				E260BC7D24961B6D00C4F26E /* ConstraintView.swift in Sources */,
 				E20A938D24947D9000CBB519 /* SceneDelegate.swift in Sources */,
@@ -409,6 +416,7 @@
 				E260BC7824961B6D00C4F26E /* ConstraintPriority.swift in Sources */,
 				E260BC6D24961B6D00C4F26E /* ConstraintMultiplierTarget.swift in Sources */,
 				E260BC8F24961B6D00C4F26E /* ConstraintDirectionalInsets.swift in Sources */,
+				E288FE2024970BD600890E1A /* InputStyleCell.swift in Sources */,
 				E260BC6F24961B6D00C4F26E /* ConstraintDescription.swift in Sources */,
 				E260BC8124961B6D00C4F26E /* ConstraintConstantTarget.swift in Sources */,
 				E260BC7924961B6D00C4F26E /* ConstraintInsetTarget.swift in Sources */,
@@ -593,6 +601,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XWWNNK8A4D;
 				INFOPLIST_FILE = ADASCalibrationInterfaceDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -610,6 +619,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XWWNNK8A4D;
 				INFOPLIST_FILE = ADASCalibrationInterfaceDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
