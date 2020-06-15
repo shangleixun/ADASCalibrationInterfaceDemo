@@ -54,6 +54,7 @@
 		E260BC9124961B6D00C4F26E /* ConstraintMakerRelatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E260BC6C24961B6D00C4F26E /* ConstraintMakerRelatable.swift */; };
 		E288FE1E24970AD100890E1A /* InputParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E288FE1D24970AD100890E1A /* InputParametersView.swift */; };
 		E288FE2024970BD600890E1A /* InputStyleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E288FE1F24970BD600890E1A /* InputStyleCell.swift */; };
+		E288FE242497993E00890E1A /* image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E288FE232497993E00890E1A /* image.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +129,7 @@
 		E260BC6C24961B6D00C4F26E /* ConstraintMakerRelatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintMakerRelatable.swift; sourceTree = "<group>"; };
 		E288FE1D24970AD100890E1A /* InputParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputParametersView.swift; sourceTree = "<group>"; };
 		E288FE1F24970BD600890E1A /* InputStyleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputStyleCell.swift; sourceTree = "<group>"; };
+		E288FE232497993E00890E1A /* image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				E20A938A24947D9000CBB519 /* AppDelegate.swift */,
 				E20A938C24947D9000CBB519 /* SceneDelegate.swift */,
 				E20A938E24947D9000CBB519 /* ViewController.swift */,
+				E288FE232497993E00890E1A /* image.jpg */,
 				E20A939024947D9000CBB519 /* Main.storyboard */,
 				E20A939324947D9000CBB519 /* Assets.xcassets */,
 				E20A939524947D9000CBB519 /* LaunchScreen.storyboard */,
@@ -359,6 +362,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E288FE242497993E00890E1A /* image.jpg in Resources */,
 				E20A939724947D9000CBB519 /* LaunchScreen.storyboard in Resources */,
 				E20A939424947D9000CBB519 /* Assets.xcassets in Resources */,
 				E20A939224947D9000CBB519 /* Main.storyboard in Resources */,
