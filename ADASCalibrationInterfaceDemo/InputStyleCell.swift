@@ -38,27 +38,32 @@ class InputStyleCell: UITableViewCell, UITextFieldDelegate {
     private var model: InputStyleModel?
     var inputHandler: UIInputViewInputEventHandler?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override
+    init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addCustomViews()
         NotificationCenter.default.addObserver(self, selector: #selector(resignResponder), name: .UITextFieldsResignResponder, object: nil)
     }
     
-    required init?(coder: NSCoder) {
+    required
+    init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func awakeFromNib() {
+    override
+    func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
+    override
+    func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
     
+    public
     func setModel(_ model: InputStyleModel!) {
         
         self.model = model
@@ -71,6 +76,7 @@ class InputStyleCell: UITableViewCell, UITextFieldDelegate {
         rightView?.text = model.unit
     }
     
+    private
     func addCustomViews() {
         inputTitle = UILabel()
         inputTitle.font = UIFont(name: "ArialRoundedMTBold", size: 13)
@@ -112,7 +118,8 @@ class InputStyleCell: UITableViewCell, UITextFieldDelegate {
         
     }
     
-    @objc func textFieldTextDidChange(_ sender: UITextField) {
+    @objc public
+    func textFieldTextDidChange(_ sender: UITextField) {
         inputText = sender.text
         inputHandler?(self, false)
     }
@@ -122,7 +129,8 @@ class InputStyleCell: UITableViewCell, UITextFieldDelegate {
         return true
     }
     
-    @objc func resignResponder() {
+    @objc private
+    func resignResponder() {
         inputField.resignFirstResponder()
     }
     

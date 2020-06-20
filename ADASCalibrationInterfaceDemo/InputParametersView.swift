@@ -8,6 +8,7 @@
 
 import UIKit
 
+public
 enum IPVState: Int {
     case null
     case allEmpty
@@ -35,7 +36,8 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // MARK:- Public methods
     
-    public func updateModelBy(key: String, value: String) {
+    public
+    func updateModelBy(key: String, value: String) {
         
         var tIdx: Int?
         for (idx, model) in dataSource.enumerated() {
@@ -50,7 +52,8 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    public func edgeShow() {
+    public
+    func edgeShow() {
         
         if isSelectedFieldVisible == true {
             if let field = selectedField,
@@ -71,7 +74,8 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         checkCanSendState()
     }
     
-    public func edgeHide() {
+    public
+    func edgeHide() {
         
         if let sIndex = selectedIndexPath {
             isSelectedFieldVisible = tableView.indexPathsForVisibleRows?.contains(sIndex)
@@ -82,15 +86,18 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // MARK:- Init
     
-    override init(frame: CGRect) {
+    override
+    init(frame: CGRect) {
         super.init(frame: frame)
         addSubTableView()
     }
     
-    required init?(coder: NSCoder) {
+    required
+    init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private
     func addSubTableView() {
         
         tableView = UITableView(frame: CGRect.zero, style: .plain)
@@ -178,6 +185,7 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    private
     func showingCellFrameChanged(indexPath: IndexPath?) {
         if let tIndex = indexPath {
             let cellRect = tableView.rectForRow(at: tIndex)
@@ -185,6 +193,7 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    private
     func checkCanSendState() {
         
         var valuedCount = 0
