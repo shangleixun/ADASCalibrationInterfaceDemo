@@ -53,7 +53,8 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     public func edgeShow() {
         
         if isSelectedFieldVisible == true {
-            if let field = selectedField, let _ = selectedField?.canBecomeFirstResponder {
+            if let field = selectedField,
+                selectedField?.canBecomeFirstResponder == true {
                 field.becomeFirstResponder()
             }
         } else {
@@ -62,9 +63,9 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
             }
         }
         
+        let tPath = IndexPath(row: dataSource.count - 1, section: 0)
         UIView.performWithoutAnimation { [weak self] in
-            tableView.reloadRows(at: [ IndexPath(row: (self?.dataSource.count ?? 1) - 1, section: 0) ], with: .none
-            )
+            self?.tableView.reloadRows(at: [ tPath ], with: .none)
         }
         
         checkCanSendState()
