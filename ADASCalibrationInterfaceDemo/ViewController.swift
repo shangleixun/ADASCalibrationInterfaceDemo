@@ -274,6 +274,8 @@ class ViewController: UIViewController {
         let text = String.init(format: "{x:%.1f, y:%.1f}", x, y)
         let txtRect = text.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 60), options: .usesLineFragmentOrigin, attributes: [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .heavy) ], context: nil)
         
+        inputView_c.updateModelBy(key: "vanp", value: text)
+        
         let newFrame = CGRect(x: 100, y: 100, width: txtRect.width.rounded(.up), height: 60)
         
         UIView.animate(withDuration: 0.2) { [weak self] in

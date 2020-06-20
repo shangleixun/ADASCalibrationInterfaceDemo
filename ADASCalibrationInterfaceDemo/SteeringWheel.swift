@@ -16,9 +16,9 @@ public enum SteeringWheelButtonDirection: Int {
 }
 
 private enum DispatchSourceTimerState: String {
-    case null = "null"
-    case started = "started"
-    case cancelled = "cancelled"
+    case null
+    case started
+    case cancelled
 }
 
 public typealias UIButtonTouchUpInsideEvent = (AnyObject?) -> Void
@@ -47,46 +47,46 @@ class SteeringWheel: UIView {
     
     func addCustomViews() {
         
-        let width = self.frame.width
-        let height = self.frame.height
+        let width = frame.width
+        let height = frame.height
         
         let normalImageNames = [ "arrow_up_c", "arrow_left_c", "arrow_right_c", "arrow_down_c" ]
         let highlightedImageNames = [ "arrow_up_selected", "arrow_left_selected", "arrow_right_selected", "arrow_down_selected" ]
         
-        let sel = #selector(self.touchButtonEvent(_:))
+        let sel = #selector(touchButtonEvent(_:))
         
-        self.up = self.gimmeButtonWith(direction: .up, image: normalImageNames[0], highlightedImage: highlightedImageNames[0], action: sel)
-        self.left = self.gimmeButtonWith(direction: .left, image: normalImageNames[1], highlightedImage: highlightedImageNames[1], action: sel)
-        self.right = self.gimmeButtonWith(direction: .right, image: normalImageNames[2], highlightedImage: highlightedImageNames[2], action: sel)
-        self.down = self.gimmeButtonWith(direction: .down, image: normalImageNames[3], highlightedImage: highlightedImageNames[3], action: sel)
+        up = gimmeButtonWith(direction: .up, image: normalImageNames[0], highlightedImage: highlightedImageNames[0], action: sel)
+        left = gimmeButtonWith(direction: .left, image: normalImageNames[1], highlightedImage: highlightedImageNames[1], action: sel)
+        right = gimmeButtonWith(direction: .right, image: normalImageNames[2], highlightedImage: highlightedImageNames[2], action: sel)
+        down = gimmeButtonWith(direction: .down, image: normalImageNames[3], highlightedImage: highlightedImageNames[3], action: sel)
         
-        self.addSubview(self.up)
-        self.addSubview(self.left)
-        self.addSubview(self.right)
-        self.addSubview(self.down)
+        addSubview(up)
+        addSubview(left)
+        addSubview(right)
+        addSubview(down)
         
         let btn_width = width / 3.0
         let btn_height = height / 3.0
         
-        self.up.snp.makeConstraints { (make) in
+        up.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.equalToSuperview().offset(width/3.0)
             make.size.equalTo(CGSize(width: btn_width, height: btn_height))
         }
         
-        self.left.snp.makeConstraints { (make) in
+        left.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(height/3.0)
             make.left.equalToSuperview()
             make.size.equalTo(CGSize(width: btn_width, height: btn_height))
         }
         
-        self.right.snp.makeConstraints { (make) in
+        right.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(height/3.0)
             make.right.equalToSuperview()
             make.size.equalTo(CGSize(width: btn_width, height: btn_height))
         }
         
-        self.down.snp.makeConstraints { (make) in
+        down.snp.makeConstraints { (make) in
             make.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(width/3.0)
             make.size.equalTo(CGSize(width: btn_width, height: btn_height))
@@ -102,37 +102,37 @@ class SteeringWheel: UIView {
         btn.setImage(UIImage(named: highlightedImage), for: .highlighted)
         btn.addTarget(self, action: action, for: .touchUpInside)
         
-        let longPress = UILongPressGestureRecognizer.init(target: self, action: #selector(self.longPressButtonEvent(_:)))
+        let longPress = UILongPressGestureRecognizer.init(target: self, action: #selector(longPressButtonEvent(_:)))
         btn.addGestureRecognizer(longPress)
         
         return btn
     }
     
     @objc func touchButtonEvent(_ sender: UIButton!) {
-        if self.btnTouchEvent != nil {
-            self.btnTouchEvent!(sender)
+        if btnTouchEvent != nil {
+            btnTouchEvent!(sender)
         }
         
-        if self.haptics == nil {
-            self.haptics = UIImpactFeedbackGenerator(style: .medium)
+        if haptics == nil {
+            haptics = UIImpactFeedbackGenerator(style: .medium)
         }
-        self.haptics?.prepare()
+        haptics?.prepare()
         
         if #available(iOS 13.0, *) {
-            self.haptics?.impactOccurred(intensity: 1.0)
+            haptics?.impactOccurred(intensity: 1.0)
         } else {
-            self.haptics?.impactOccurred()
+            haptics?.impactOccurred()
         }
-        self.haptics?.prepare()
+        haptics?.prepare()
     }
     
     @objc func longPressButtonEvent(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            if self.haptics == nil {
-                self.haptics = UIImpactFeedbackGenerator(style: .medium)
+            if haptics == nil {
+                haptics = UIImpactFeedbackGenerator(style: .medium)
             }
-            self.haptics?.prepare()
+            haptics?.prepare()
             
             needRepeat = true
             engineStartTimerWith(view: gesture.view as? UIButton)

@@ -31,26 +31,37 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     var sendButton: UIButton!
     
-    let INPUT_CELL_ID = "InputStyleCell"
+    let kInputCellIdentifier = "kInputCellIdentifier"
     
-    public func updateModelBy(key: String, alue: String) {
-        
-    }
+
     
     // MARK:- Public methods
+    
+    public func updateModelBy(key: String, value: String) {
+        
+        var tIdx: Int?
+        for (idx, model) in dataSource.enumerated() {
+            if model.key == key {
+                tIdx = idx
+                break
+            }
+        }
+        
+        if let targetIdx = tIdx {
+            dataSource[targetIdx].value = value
+        }
+    }
     
     public func edgeShow() {
         
         if isSelectedFieldVisible {
-            if selectedField?.canBecomeFirstResponder ?? false {
-                self.selectedField?.becomeFirstResponder()
+            if let field = selectedField, let _ = selectedField?.canBecomeFirstResponder {
+                field.becomeFirstResponder()
             }
         } else {
-            
             if let firstCell = tableView.visibleCells.first as? InputStyleCell {
                 firstCell.inputField.becomeFirstResponder()
             }
-            
         }
         
         UIView.performWithoutAnimation { [weak self] in
@@ -62,7 +73,6 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     public func edgeHide() {
-        
         isSelectedFieldVisible = tableView.indexPathsForVisibleRows?.contains(selectedIndexPath ?? IndexPath(row: 1, section: 0)) ?? false
         NotificationCenter.default.post(name: .UITextFieldsResignResponder, object: nil)
     }
@@ -85,7 +95,7 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = UIColor.orange
-        tableView.register(InputStyleCell.self, forCellReuseIdentifier: INPUT_CELL_ID)
+        tableView.register(InputStyleCell.self, forCellReuseIdentifier: kInputCellIdentifier)
         
         sendButton = UIButton(type: .custom)
         sendButton.frame = CGRect(x: 0, y: 0, width: 10, height: 60)
@@ -101,7 +111,7 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
             make.edges.equalToSuperview()
         }
         
-        let keys = [ "vhwd", "dccv", "dcfb", "dcft", "camh", "caml", "cams", "vanp" ];
+        let keys = [ "vhhe", "vhwd", "dccv", "dcfb", "dcft", "camh", "caml", "cams", "vanp" ];
         let titles = [ NSLocalizedString("Vehicle width", comment: ""),
                        NSLocalizedString("Distance between camera and the center of vehicle", comment: ""),
                        NSLocalizedString("Distance between camera and the front bumper", comment: ""),
@@ -114,7 +124,7 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         let units = [ "| ㎝", "| ㎝", "| ㎝", "| ㎝", "| ㎝", "| ㎜", "| ㎛", "| x,y" ];
         
         for index in 0..<keys.count {
-            let model = InputStyleModel(key: keys[index], title: titles[index])
+            var model = InputStyleModel(key: keys[index], title: titles[index])
             model.unit = units[index]
             model.canInput = canInputs[index]
             dataSource.append(model)
@@ -132,7 +142,7 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: INPUT_CELL_ID, for: indexPath) as! InputStyleCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: kInputCellIdentifier, for: indexPath) as! InputStyleCell
         cell.selectionStyle = .none
         cell.indexPath = indexPath
         cell.setModel(dataSource[indexPath.row])

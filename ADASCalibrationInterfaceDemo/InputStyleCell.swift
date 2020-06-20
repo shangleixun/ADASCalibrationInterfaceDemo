@@ -15,7 +15,7 @@ extension Notification.Name {
     static let UITextFieldsResignResponder = Notification.Name(rawValue: "UITextFieldsResignResponder")
 }
 
-class InputStyleModel: NSObject {
+struct InputStyleModel  {
     
     public var key: String!
     public var title: String?
@@ -24,13 +24,8 @@ class InputStyleModel: NSObject {
     public var canInput: Bool!
     
     init(key: String, title: String) {
-        super.init()
         self.key = key
         self.title = title
-    }
-    
-    override class func description() -> String {
-        return ""
     }
 }
 
@@ -46,7 +41,7 @@ class InputStyleCell: UITableViewCell, UITextFieldDelegate {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addCustomViews()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.resignResponder), name: .UITextFieldsResignResponder, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(resignResponder), name: .UITextFieldsResignResponder, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -95,10 +90,10 @@ class InputStyleCell: UITableViewCell, UITextFieldDelegate {
         inputField.rightView = rightView
         inputField.rightViewMode = .always
         
-        inputField.addTarget(self, action: #selector(self.textFieldTextDidChange(_:)), for: .editingChanged)
+        inputField.addTarget(self, action: #selector(textFieldTextDidChange(_:)), for: .editingChanged)
         
-        self.contentView.addSubview(inputTitle)
-        self.contentView.addSubview(inputField)
+        contentView.addSubview(inputTitle)
+        contentView.addSubview(inputField)
         
         let padding = 8.0
         inputTitle.snp.makeConstraints { (make) in
@@ -119,11 +114,11 @@ class InputStyleCell: UITableViewCell, UITextFieldDelegate {
     
     @objc func textFieldTextDidChange(_ sender: UITextField) {
         inputText = sender.text
-        self.inputHandler?(self, false)
+        inputHandler?(self, false)
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        self.inputHandler?(self, true)
+        inputHandler?(self, true)
         return true
     }
     
