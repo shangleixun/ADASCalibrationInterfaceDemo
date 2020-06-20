@@ -27,13 +27,11 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     var tableView: UITableView!
     var selectedField: UITextField?
     var selectedIndexPath: IndexPath?
-    var isSelectedFieldVisible = false
+    var isSelectedFieldVisible: Bool?
     
     var sendButton: UIButton!
     
     let kInputCellIdentifier = "kInputCellIdentifier"
-    
-
     
     // MARK:- Public methods
     
@@ -54,7 +52,7 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     public func edgeShow() {
         
-        if isSelectedFieldVisible {
+        if isSelectedFieldVisible == true {
             if let field = selectedField, let _ = selectedField?.canBecomeFirstResponder {
                 field.becomeFirstResponder()
             }
@@ -73,7 +71,11 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     public func edgeHide() {
-        isSelectedFieldVisible = tableView.indexPathsForVisibleRows?.contains(selectedIndexPath ?? IndexPath(row: 1, section: 0)) ?? false
+        
+        if let sIndex = selectedIndexPath {
+            isSelectedFieldVisible = tableView.indexPathsForVisibleRows?.contains(sIndex)
+        }
+        
         NotificationCenter.default.post(name: .UITextFieldsResignResponder, object: nil)
     }
     
@@ -105,14 +107,15 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         tableView.tableFooterView = sendButton
         
-        self.addSubview(tableView)
+        addSubview(tableView)
         
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
         
         let keys = [ "vhhe", "vhwd", "dccv", "dcfb", "dcft", "camh", "caml", "cams", "vanp" ];
-        let titles = [ NSLocalizedString("Vehicle width", comment: ""),
+        let titles = [ NSLocalizedString("Vehicle height", comment: ""),
+                       NSLocalizedString("Vehicle width", comment: ""),
                        NSLocalizedString("Distance between camera and the center of vehicle", comment: ""),
                        NSLocalizedString("Distance between camera and the front bumper", comment: ""),
                        NSLocalizedString("Distance between camera and the front tire", comment: ""),
@@ -120,13 +123,15 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
                        NSLocalizedString("Camera lens", comment: ""),
                        NSLocalizedString("Camera sensor size", comment: ""),
                        NSLocalizedString("Vanishing point", comment: "") ]
-        let canInputs = [ true, true, true, true, true, true,  true, true ]
-        let units = [ "| ㎝", "| ㎝", "| ㎝", "| ㎝", "| ㎝", "| ㎜", "| ㎛", "| x,y" ];
+        let canInputs = [ true, true, true, true, true, true, true, true, true ]
+        let units = [ "㎝","㎝", "㎝", "㎝", "㎝", "㎝", "㎜", "㎛", "x,y" ];
+        let values = [ "", "", "", "", "", "", "", "", "{x:0, y:0}" ]
         
         for index in 0..<keys.count {
             var model = InputStyleModel(key: keys[index], title: titles[index])
             model.unit = units[index]
             model.canInput = canInputs[index]
+            model.value = values[index]
             dataSource.append(model)
         }
         
@@ -152,25 +157,31 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
         
         cell.inputHandler = { [weak self] (view, justShow) in
-            let backCell = view as? InputStyleCell
-            if backCell != nil && backCell?.isMember(of: InputStyleCell.self) == true {
-                self?.selectedField = backCell?.inputField
-                self?.selectedIndexPath = backCell?.indexPath
+            
+            if let backCell = view as? InputStyleCell {
+                self?.selectedField = backCell.inputField
+                self?.selectedIndexPath = backCell.indexPath
+                
                 if justShow == true {
-                    self?.showingCellFrameChanged(indexPath: backCell?.indexPath)
+                    self?.showingCellFrameChanged(indexPath: backCell.indexPath)
                 } else {
-                    self?.dataSource[backCell?.indexPath?.row ?? 0].value = backCell?.inputText
-                    self?.checkCanSendState()
+                    if let tRow = backCell.indexPath?.row {
+                        self?.dataSource[tRow].value = backCell.inputText
+                        self?.checkCanSendState()
+                    }
                 }
             }
+            
         }
         
         return cell
     }
     
     func showingCellFrameChanged(indexPath: IndexPath?) {
-        let cellRect = tableView.rectForRow(at: indexPath ?? IndexPath(row: 0, section: 0))
-        self.frameChangedBlock?(cellRect)
+        if let tIndex = indexPath {
+            let cellRect = tableView.rectForRow(at: tIndex)
+            frameChangedBlock?(cellRect)
+        }
     }
     
     func checkCanSendState() {
@@ -184,13 +195,13 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         switch valuedCount {
         case 0:
-            self.stateChangedBlock?(IPVState.allEmpty)
+            stateChangedBlock?(IPVState.allEmpty)
             sendButton.setTitleColor(UIColor.gray, for: .normal)
         case 1..<dataSource.count:
-            self.stateChangedBlock?(IPVState.HalfFilled)
+            stateChangedBlock?(IPVState.HalfFilled)
             sendButton.setTitleColor(.gray, for: .normal)
         case dataSource.count:
-            self.stateChangedBlock?(IPVState.canSend)
+            stateChangedBlock?(IPVState.canSend)
             sendButton.setTitleColor(.green, for: .normal)
         default:
             print("do nothing")

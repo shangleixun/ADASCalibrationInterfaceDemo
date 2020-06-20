@@ -50,10 +50,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.addVideoViewAndWheelControl()
-        self.addInputView()
-        self.addShowBtn()
-        self.addViewControllerObservers(isAdd: true)
+        addVideoViewAndWheelControl()
+        addInputView()
+        addShowBtn()
+        addViewControllerObservers(isAdd: true)
         
     }
     
@@ -61,22 +61,22 @@ class ViewController: UIViewController {
         
         showInputViewBtn = UIButton(type: .custom)
         showInputViewBtn.setImage(leftArrowTriangle, for: .normal)
-        self.view.addSubview(showInputViewBtn)
+        view.addSubview(showInputViewBtn)
         
         showInputViewBtn.snp.makeConstraints { (make) in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.size.equalTo(CGSize(width: 100, height: 100))
         }
-        showInputViewBtn.addTarget(self, action: #selector(self.showInputView), for: .touchUpInside)
+        showInputViewBtn.addTarget(self, action: #selector(showInputView), for: .touchUpInside)
     }
     
     @objc func showInputView() {
         if inputViewShowing {
-            self.animateInInputView()
+            animateInInputView()
             return
         }
-        self.animateOutInputView()
+        animateOutInputView()
     }
     
     func addInputView() {
@@ -91,7 +91,7 @@ class ViewController: UIViewController {
                 print("\(NSCoder.string(for: new))")
             }
         }
-        self.view.addSubview(inputView_c)
+        view.addSubview(inputView_c)
     }
     
     func addVideoViewAndWheelControl() {
@@ -102,7 +102,7 @@ class ViewController: UIViewController {
         videoView.image = UIImage.init(named: "image.jpg")
         videoView.contentMode = .scaleToFill
         
-        self.view.addSubview(videoView)
+        view.addSubview(videoView)
         videoView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
@@ -127,7 +127,7 @@ class ViewController: UIViewController {
         videoView.addSubview(touchPoint)
         selected_pixel_point = CGPoint.zero
         
-        self.viewDrawLine()
+        viewDrawLine()
         
         showInfo = UILabel()
         showInfo.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 239/255.0, alpha: 1)
@@ -139,16 +139,16 @@ class ViewController: UIViewController {
         
         videoView.addSubview(showInfo)
         
-        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(self.edgeShowInputView(_:)))
+        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(edgeShowInputView(_:)))
         edgePan.edges = .right
-        self.view.addGestureRecognizer(edgePan)
+        view.addGestureRecognizer(edgePan)
         
     }
     
     @objc func edgeShowInputView(_ ges: UIScreenEdgePanGestureRecognizer) {
         switch ges.state {
         case .began:
-            self.animateOutInputView()
+            animateOutInputView()
         default:
             print("do nothing")
         }
@@ -185,31 +185,31 @@ class ViewController: UIViewController {
     
     func addViewControllerObservers(isAdd: Bool) {
         if isAdd == true {
-            NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         } else {
             NotificationCenter.default.removeObserver(self)
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.touchComesToView(touches)
+        touchComesToView(touches)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.touchComesToView(touches, false)
+        touchComesToView(touches, false)
     }
     
     func touchComesToView(_ touches: Set<UITouch>, _ isBegan: Bool = true) {
         
-        if var point = touches.first?.location(in: self.view) {
+        if var point = touches.first?.location(in: view) {
             
-            point = videoView.layer.convert(point, from: self.view.layer)
+            point = videoView.layer.convert(point, from: view.layer)
             if videoView.layer.contains(point) {
                 
                 if inputViewWillHide == false && inputViewShowing {
                     inputViewWillHide = true
-                    self.animateInInputView()
+                    animateInInputView()
                     return
                 } else if inputViewWillHide {
                     return
@@ -232,7 +232,7 @@ class ViewController: UIViewController {
                 if y_p > hMax {
                     y_p = hMax
                 }
-                self.moveTargetViewTo(x: x_p, y: y_p)
+                moveTargetViewTo(x: x_p, y: y_p)
             }
         }
     }
@@ -269,7 +269,7 @@ class ViewController: UIViewController {
             }
         }
         
-        self.moveTargetViewTo(x: pointx, y: pointy)
+        moveTargetViewTo(x: pointx, y: pointy)
     }
     
     func moveTargetViewTo(x: CGFloat, y: CGFloat) {
