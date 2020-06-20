@@ -30,6 +30,7 @@ class ViewController: UIViewController {
     var showInfo: UILabel!
     var inputView_c: InputParametersView!
     var inputViewShowing = false
+    var inputViewWillHide = false
     var showInputViewBtn: UIButton!
     
     var leftArrowTriangle: UIImage? {
@@ -157,7 +158,7 @@ class ViewController: UIViewController {
         guard inputViewShowing == false else {
             return
         }
-        
+        print("输入框出来了")
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.inputView_c.frame = CGRect(origin: (self?.input_origin)!, size: (self?.input_size)!)
             self?.inputView_c.edgeShow()
@@ -168,11 +169,16 @@ class ViewController: UIViewController {
     }
     
     func animateInInputView() {
+        guard inputViewShowing == true else {
+            return
+        }
+        print("输入框进去了")
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.inputView_c.frame = CGRect(origin: (self?.input_origin_hide)!, size: (self?.input_size)!)
             self?.inputView_c.edgeHide()
             self?.showInputViewBtn.setImage(self?.leftArrowTriangle, for: .normal)
         }) { [weak self] (finished) in
+            self?.inputViewWillHide = false
             self?.inputViewShowing = false
         }
     }
@@ -191,17 +197,21 @@ class ViewController: UIViewController {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.touchComesToView(touches)
+        self.touchComesToView(touches, false)
     }
     
-    func touchComesToView(_ touches: Set<UITouch>) {
+    func touchComesToView(_ touches: Set<UITouch>, _ isBegan: Bool = true) {
         
         if var point = touches.first?.location(in: self.view) {
             
             point = videoView.layer.convert(point, from: self.view.layer)
             if videoView.layer.contains(point) {
-                if inputViewShowing {
+                
+                if inputViewWillHide == false && inputViewShowing {
+                    inputViewWillHide = true
                     self.animateInInputView()
+                    return
+                } else if inputViewWillHide {
                     return
                 }
                 
