@@ -9,16 +9,16 @@
 import UIKit
 
 public enum SteeringWheelButtonDirection: Int {
-    case up = 700
-    case left = 701
-    case right = 702
-    case down = 703
+    case up     = 700
+    case left   = 701
+    case right  = 702
+    case down   = 703
 }
 
 private enum DispatchSourceTimerState: String {
     case null
     case started
-    case cancelled
+    static let cancelled = DispatchSourceTimerState.null
 }
 
 public typealias UIButtonTouchUpInsideEvent = (AnyObject?) -> Void
@@ -33,18 +33,21 @@ class SteeringWheel: UIView {
     private var down: UIButton!
     private var needRepeat: Bool!
     private var timerState: DispatchSourceTimerState?
-    private var long_press_timer: DispatchSourceTimer?
+    private var longPressTimer: DispatchSourceTimer?
     private var haptics: UIImpactFeedbackGenerator?
     
-    override init(frame: CGRect) {
+    override
+    init(frame: CGRect) {
         super.init(frame: frame)
         addCustomViews()
     }
     
-    required init?(coder: NSCoder) {
+    required
+    init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private
     func addCustomViews() {
         
         let width = frame.width
@@ -94,6 +97,7 @@ class SteeringWheel: UIView {
         
     }
     
+    private
     func gimmeButtonWith(direction: SteeringWheelButtonDirection, image: String, highlightedImage: String, action: Selector) -> UIButton! {
         
         let btn = UIButton(type: .custom)
@@ -108,7 +112,8 @@ class SteeringWheel: UIView {
         return btn
     }
     
-    @objc func touchButtonEvent(_ sender: UIButton!) {
+    @objc private
+    func touchButtonEvent(_ sender: UIButton!) {
         if btnTouchEvent != nil {
             btnTouchEvent!(sender)
         }
@@ -126,7 +131,8 @@ class SteeringWheel: UIView {
         haptics?.prepare()
     }
     
-    @objc func longPressButtonEvent(_ gesture: UILongPressGestureRecognizer) {
+    @objc private
+    func longPressButtonEvent(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
             if haptics == nil {
@@ -146,15 +152,16 @@ class SteeringWheel: UIView {
         }
     }
     
+    private
     func engineStartTimerWith(view: UIButton?) {
-        if long_press_timer == nil {
-            long_press_timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.main)
-            long_press_timer?.schedule(deadline: .now(), repeating: 0.05, leeway: DispatchTimeInterval.seconds(0))
-            long_press_timer?.setEventHandler { [weak self] in
+        if longPressTimer == nil {
+            longPressTimer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.main)
+            longPressTimer?.schedule(deadline: .now(), repeating: 0.05, leeway: DispatchTimeInterval.seconds(0))
+            longPressTimer?.setEventHandler { [weak self] in
                 
                 if self?.needRepeat == false {
-                    self?.long_press_timer?.cancel()
-                    self?.long_press_timer = nil
+                    self?.longPressTimer?.cancel()
+                    self?.longPressTimer = nil
                     self?.timerState = .cancelled
                 } else {
                     if #available(iOS 13.0, *) {
@@ -171,15 +178,15 @@ class SteeringWheel: UIView {
         }
         
         if timerState == DispatchSourceTimerState.null {
-            long_press_timer?.resume()
+            longPressTimer?.resume()
             timerState = .started
         }
     }
     
-    override func delete(_ sender: Any?) {
-        if long_press_timer != nil {
-            long_press_timer?.cancel()
-            long_press_timer = nil
+    deinit {
+        if longPressTimer != nil {
+            longPressTimer?.cancel()
+            longPressTimer = nil
         }
     }
     

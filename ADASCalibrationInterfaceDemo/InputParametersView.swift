@@ -12,14 +12,14 @@ public
 enum IPVState: Int {
     case null
     case allEmpty
-    case HalfFilled
+    case halfFilled
     case canSend
 }
 
 typealias UIFrameChanged = (CGRect) -> Void
 typealias IPVTotalStateChanged = (IPVState) -> Void
 
-class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
+class InputParametersView: UIView {
     
     var frameChangedBlock: UIFrameChanged?
     var stateChangedBlock: IPVTotalStateChanged?
@@ -103,7 +103,6 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView = UITableView(frame: CGRect.zero, style: .plain)
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.dataSource = self
-        tableView.delegate = self
         tableView.backgroundColor = UIColor.orange
         tableView.register(InputStyleCell.self, forCellReuseIdentifier: kInputCellIdentifier)
         
@@ -145,6 +144,54 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    private
+    func showingCellFrameChanged(indexPath: IndexPath?) {
+        if let tIndex = indexPath {
+            let cellRect = tableView.rectForRow(at: tIndex)
+            frameChangedBlock?(cellRect)
+        }
+    }
+    
+    private
+    func checkCanSendState() {
+        
+        var valuedCount = 0
+        for (_, value) in dataSource.enumerated() {
+            if value.value?.isEmpty == false {
+                valuedCount += 1
+            }
+        }
+        
+        switch valuedCount {
+        case 0:
+            stateChangedBlock?(IPVState.allEmpty)
+            sendButton.setTitleColor(UIColor.gray, for: .normal)
+        case 1..<dataSource.count:
+            stateChangedBlock?(IPVState.halfFilled)
+            sendButton.setTitleColor(.gray, for: .normal)
+        case dataSource.count:
+            stateChangedBlock?(IPVState.canSend)
+            sendButton.setTitleColor(.green, for: .normal)
+        default:
+            print("do nothing")
+        }
+        
+    }
+
+    /*
+    // Only override draw() if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func draw(_ rect: CGRect) {
+        // Drawing code
+    }
+    */
+
+}
+
+// MARK:- UITableViewDataSource
+
+extension InputParametersView: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         60
     }
@@ -184,47 +231,4 @@ class InputParametersView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
-    
-    private
-    func showingCellFrameChanged(indexPath: IndexPath?) {
-        if let tIndex = indexPath {
-            let cellRect = tableView.rectForRow(at: tIndex)
-            frameChangedBlock?(cellRect)
-        }
-    }
-    
-    private
-    func checkCanSendState() {
-        
-        var valuedCount = 0
-        for (_, value) in dataSource.enumerated() {
-            if value.value?.isEmpty == false {
-                valuedCount += 1
-            }
-        }
-        
-        switch valuedCount {
-        case 0:
-            stateChangedBlock?(IPVState.allEmpty)
-            sendButton.setTitleColor(UIColor.gray, for: .normal)
-        case 1..<dataSource.count:
-            stateChangedBlock?(IPVState.HalfFilled)
-            sendButton.setTitleColor(.gray, for: .normal)
-        case dataSource.count:
-            stateChangedBlock?(IPVState.canSend)
-            sendButton.setTitleColor(.green, for: .normal)
-        default:
-            print("do nothing")
-        }
-        
-    }
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }
