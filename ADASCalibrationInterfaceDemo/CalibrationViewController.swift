@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CalibrationViewController.swift
 //  ADASCalibrationInterfaceDemo
 //
 //  Created by 尚雷勋 on 2020/6/13.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalibrationViewController: UIViewController {
     
     let kPixelWidthMax = 1280
     let kPixelHeightMax = 720
