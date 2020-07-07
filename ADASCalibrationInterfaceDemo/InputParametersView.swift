@@ -57,7 +57,7 @@ class InputParametersView: UIView {
         
         if isSelectedFieldVisible == true {
             if let field = selectedField,
-                selectedField?.canBecomeFirstResponder == true {
+                field.canBecomeFirstResponder == true {
                 field.becomeFirstResponder()
             }
         } else {
